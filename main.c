@@ -14,6 +14,7 @@ typedef struct s_data
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
+    int     life;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -360,27 +361,77 @@ int	hook(int keycode, void *param)
     if (data->selected_y > 8)
         data->selected_y = 8;
     if (keycode == 65436)
-        data->sudoku[data->selected_y][data->selected_x] = '1';
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '1'))
+            data->sudoku[data->selected_y][data->selected_x] = '1';
+        else
+            data->life -= 1;
+    }
     if (keycode == 65433)
-        data->sudoku[data->selected_y][data->selected_x] = '2';
-    if (keycode == 65435)   
-        data->sudoku[data->selected_y][data->selected_x] = '3';
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '2'))
+            data->sudoku[data->selected_y][data->selected_x] = '2';
+        else
+            data->life -= 1;
+    }
+    if (keycode == 65435)
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '3'))
+            data->sudoku[data->selected_y][data->selected_x] = '3';
+        else
+            data->life -= 1;
+    }
     if (keycode == 65430)
-        data->sudoku[data->selected_y][data->selected_x] = '4';
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '4'))
+            data->sudoku[data->selected_y][data->selected_x] = '4';
+        else
+            data->life -= 1;
+    }
     if (keycode == 65437)
-        data->sudoku[data->selected_y][data->selected_x] = '5';
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '5'))
+            data->sudoku[data->selected_y][data->selected_x] = '5';
+        else
+            data->life -= 1;
+    }
     if (keycode == 65432)
-        data->sudoku[data->selected_y][data->selected_x] = '6';
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '6'))
+            data->sudoku[data->selected_y][data->selected_x] = '6';
+        else
+            data->life -= 1;
+    }
     if (keycode == 65429)
-        data->sudoku[data->selected_y][data->selected_x] = '7';
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '7'))
+            data->sudoku[data->selected_y][data->selected_x] = '7';
+        else
+            data->life -= 1;
+    }
     if (keycode == 65431)
-        data->sudoku[data->selected_y][data->selected_x] = '8';
-    if (keycode == 65434)   
-        data->sudoku[data->selected_y][data->selected_x] = '9';
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '8'))
+            data->sudoku[data->selected_y][data->selected_x] = '8';
+        else
+            data->life -= 1;
+    }
+    if (keycode == 65434)
+    {
+        if (ft_check(data->sudoku, data->selected_y, data->selected_x, '9'))
+            data->sudoku[data->selected_y][data->selected_x] = '9';
+        else
+            data->life -= 1;
+    }
     if (keycode == 65438)
         data->sudoku[data->selected_y][data->selected_x] = '.';
     if (keycode == 32)
         fill_sudoku(data->sudoku);
+    if (data->life == 0)
+    {
+        write(1, "Game Over\n", 10);
+        safeexit(param);
+    }
     put_number_img(data, data->sudoku);
     return (0);
 }
@@ -405,6 +456,7 @@ int	main(void)
 	fill_sudoku(data->sudoku);
     data->selected_x = 0;
     data->selected_y = 0;
+    data->life = 30;
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_background, 0, 0);
 	put_number_img(data, data->sudoku);
 	mlx_hook(data->win_ptr, 17, 0, safeexit, data);
