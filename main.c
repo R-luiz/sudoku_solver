@@ -221,6 +221,7 @@ void	put_number_img(t_data *data, char **ft_sudoku)
 	int	x;
 	int	y;
 
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_background, 0, 0);
 	y = 20;
 	for (i = 0; i < 9; i++) // Use for-loop for better readability
 	{
@@ -312,7 +313,7 @@ void	put_number_img(t_data *data, char **ft_sudoku)
             {
                 if (i == data->selected_y && j == data->selected_x)
                     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, 
-                        data->img_backgroundtiles, x, y);
+                        data->img_backgroundtiles, x + 0, y + 10);
                 else
                     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr,
                         data->img_backgroundtile, x, y);
@@ -334,7 +335,6 @@ int	hook(int keycode, void *param)
     t_data	*data;
 
     data = (t_data *)param;
-    printf("keycode: %d\n", keycode);
 	if (keycode == 65307)
 		safeexit(param);
     if (keycode == 65362)
@@ -456,7 +456,7 @@ int	main(void)
 	fill_sudoku(data->sudoku);
     data->selected_x = 0;
     data->selected_y = 0;
-    data->life = 30;
+    data->life = 3;
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_background, 0, 0);
 	put_number_img(data, data->sudoku);
 	mlx_hook(data->win_ptr, 17, 0, safeexit, data);
